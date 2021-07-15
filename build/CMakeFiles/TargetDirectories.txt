@@ -1,0 +1,3 @@
+/mnt/c/Users/Emanuel/documents/lip/concordo/build/CMakeFiles/rebuild_cache.dir
+/mnt/c/Users/Emanuel/documents/lip/concordo/build/CMakeFiles/edit_cache.dir
+/mnt/c/Users/Emanuel/documents/lip/concordo/build/CMakeFiles/concordo.dir
