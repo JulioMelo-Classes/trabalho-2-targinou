@@ -25,8 +25,11 @@ string Sistema::login(const string email, const string senha) {
   
     for(Usuario user : this->usuarios)
     {
-      this->usuariosLogados.insert(std::pair<int, std::pair<std::string, std::string>>(this->usuariosLogados.size() ,std::pair<std::string, std::string>(user.nome, user.email)));
-      return "Logado como " + email;
+      if(user.email == email && user.senha == senha)
+      {
+        this->usuariosLogados.insert(std::pair<int, std::pair<std::string, std::string>>(user.id ,std::pair<std::string, std::string>("", "")));
+        return "Logado como " + email;
+      }
     }
 
   return "Senha ou usuário inválidos!";
