@@ -19,6 +19,7 @@ class Servidor{
 		bool verifyName(std::string name);
 		bool verifyDonoId(int id);
 		void setDescricao(std::string descricao);
+		void setCodigoConvite(std::string codigoConvite);
 };	
 
 #endif

@@ -11,6 +11,11 @@ void Servidor::setDescricao(std::string descricao)
     this->descricao = descricao;
 }
 
+void Servidor::setCodigoConvite(std::string codigoConvite)
+{
+    this->codigoConvite = codigoConvite;
+}
+
 bool Servidor::verifyName(std::string name)
 {
     return name == this->nome;

@@ -58,6 +58,8 @@ string Sistema::create_server(int id, const string nome) {
 
 string Sistema::set_server_desc(int id, const string nome, const string descricao) {
   
+  if(!this->verifyUserStatus(id)) return "Usuário não conectado!";
+
   for(Servidor server : this->servidores)
   {
     if(server.verifyName(nome)){
@@ -71,7 +73,21 @@ string Sistema::set_server_desc(int id, const string nome, const string descrica
 }
 
 string Sistema::set_server_invite_code(int id, const string nome, const string codigo) {
-  return "set_server_invite_code NÃO IMPLEMENTADO";
+  if(!this->verifyUserStatus(id)) return "Usuário não conectado!";
+  for(Servidor server : this->servidores)
+  {
+    if(server.verifyName(nome)){
+      if(!server.verifyDonoId(id)) return "Você não possui permissão para fazer isso.";
+     if(codigo != ""){
+       server.setCodigoConvite(codigo);
+       return "Código de convite do servidor ‘" + nome + "’ modificado!";
+     }
+      server.setCodigoConvite("");
+      return "Código de convite do servidor ‘" + nome + "’ removido!";
+    }
+  }
+
+  return "Servidor ‘" + nome + "’ não existe";
 }
 
 string Sistema::list_servers(int id) {
