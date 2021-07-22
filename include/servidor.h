@@ -18,6 +18,7 @@ class Servidor{
 		Servidor(int usuarioDonoId, std::string nome);
 		bool verifyName(std::string name);
 		bool verifyDonoId(int id);
+		std::string getNome();
 		void setDescricao(std::string descricao);
 		void setCodigoConvite(std::string codigoConvite);
 };	

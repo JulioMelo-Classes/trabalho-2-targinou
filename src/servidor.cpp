@@ -16,6 +16,11 @@ void Servidor::setCodigoConvite(std::string codigoConvite)
     this->codigoConvite = codigoConvite;
 }
 
+std::string Servidor::getNome()
+{
+    return this->nome;
+}
+
 bool Servidor::verifyName(std::string name)
 {
     return name == this->nome;

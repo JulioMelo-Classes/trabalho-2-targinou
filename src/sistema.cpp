@@ -91,7 +91,18 @@ string Sistema::set_server_invite_code(int id, const string nome, const string c
 }
 
 string Sistema::list_servers(int id) {
-  return "list_servers NÃO IMPLEMENTADO";
+  if(!this->verifyUserStatus(id)) return "Usuário não conectado!";
+  std::string result;
+  int counter = 0;
+
+  for(Servidor server : this->servidores)
+  {
+    counter == this->servidores.size() - 1 ? result += server.getNome() : result += server.getNome() + "\n";
+    
+    counter++;
+  }
+
+  return  result;
 }
 
 string Sistema::remove_server(int id, const string nome) {
