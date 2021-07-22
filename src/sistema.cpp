@@ -106,7 +106,20 @@ string Sistema::list_servers(int id) {
 }
 
 string Sistema::remove_server(int id, const string nome) {
-  return "remove_server NÃO IMPLEMENTADO";
+  if(!this->verifyUserStatus(id)) return "Usuário não conectado!";
+ vector<Servidor>::iterator it;
+
+  for(it = this->servidores.begin(); it != this->servidores.end(); it++)
+  {
+    if(it->getNome() == nome)
+    {
+      if(!it->verifyDonoId(id)) return "Você não é o dono do servidor ‘"+ nome +"’";
+      this->servidores.erase(it);
+      return "Servidor ‘"+ nome +"’ removido";
+    }
+  }
+
+  return "Servidor ‘" + nome + "’ não encontrado";
 }
 
 string Sistema::enter_server(int id, const string nome, const string codigo) {
