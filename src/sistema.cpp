@@ -40,8 +40,9 @@ string Sistema::disconnect(int id) {
   std::map<int,std::pair<std::string, std::string>>::iterator it;
   it = this->usuariosLogados.find(id);
   if(this->verifyUserStatus(id)){
+    std::string userEmail = this->getUserEmailById(id);
     this->usuariosLogados.erase(it);
-    return "Desconectando usuário " + it->second.second;
+    return "Desconectando usuário " + userEmail;
   }
 
   return "Falha ao desconectar o usuário: id inválido";
@@ -180,5 +181,16 @@ bool Sistema::verifyEmail(std::string email)
   }
 
   return false;
+}
+
+std::string Sistema::getUserEmailById(int id)
+{
+  std::string email;
+  for(Usuario user : this->usuarios)
+  {
+    if(user.id == id) email = user.email;
+  }
+
+  return email;
 }
 

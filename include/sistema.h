@@ -177,7 +177,7 @@ class Sistema {
 		std::string list_messages(int id);
 		bool verifyUserStatus(int id);
 		bool verifyEmail(std::string email);
-		
+		std::string getUserEmailById(int id);
 };
 
 #endif
