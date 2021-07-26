@@ -1,3 +1,8 @@
+## Alunos: 
+Emanuel Targino Barbosa
+
+João Vitor de Oliveira Santos
+
 # Base para a atividade 02 de LP1
 
 Use esse esqueleto de classes para iniciar a terceira atividade.
