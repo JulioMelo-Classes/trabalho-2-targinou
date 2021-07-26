@@ -118,6 +118,13 @@ string Sistema::remove_server(int id, const string nome) {
     if(it->getNome() == nome)
     {
       if(!it->verifyDonoId(id)) return "Você não é o dono do servidor ‘"+ nome +"’";
+      for(map<int, std::pair<std::string, std::string>>::iterator it = this->usuariosLogados.begin(); it != this->usuariosLogados.end(); it++)
+      {
+        if(nome == it->second.first){
+          it->second.first = "";
+          it->second.second = "";
+        }
+      }
       this->servidores.erase(it);
       return "Servidor ‘"+ nome +"’ removido";
     }
