@@ -10,7 +10,9 @@ using namespace std;
 string Sistema::quit() {
   return "Saindo...";
 }
-
+/*
+A1.2 ok
+*/
 string Sistema::create_user (const string email, const string senha, const string nome) {
 
   if(this->verifyEmail(email)) return "Usuário já existe!";
@@ -21,6 +23,9 @@ string Sistema::create_user (const string email, const string senha, const strin
   return "Criando usuário " + nome + " (" + email + ")\nUsuário criado";
 }
 
+/*
+A1.3 ok
+*/
 string Sistema::login(const string email, const string senha) {
   
     for(Usuario user : this->usuarios)
@@ -35,6 +40,9 @@ string Sistema::login(const string email, const string senha) {
   return "Senha ou usuário inválidos!";
 }
 
+/*
+A2.1 ok
+*/
 string Sistema::disconnect(int id) {
 
   std::map<int,std::pair<std::string, std::string>>::iterator it;
@@ -48,6 +56,9 @@ string Sistema::disconnect(int id) {
   return "Falha ao desconectar o usuário: id inválido";
 }
 
+/*
+A2.2 ok
+*/
 string Sistema::create_server(int id, const string nome) {
   if(!this->verifyUserStatus(id)) return "Usuário não conectado!";
   
@@ -60,6 +71,9 @@ string Sistema::create_server(int id, const string nome) {
   return "Servidor criado";
 }
 
+/*
+A2.3 ok
+*/
 string Sistema::set_server_desc(int id, const string nome, const string descricao) {
   
   if(!this->verifyUserStatus(id)) return "Usuário não conectado!";
@@ -76,6 +90,9 @@ string Sistema::set_server_desc(int id, const string nome, const string descrica
   return "Servidor ‘" + nome + "’ não existe";
 }
 
+/*
+A2.4 ok
+*/
 string Sistema::set_server_invite_code(int id, const string nome, const string codigo) {
   if(!this->verifyUserStatus(id)) return "Usuário não conectado!";
   for(Servidor server : this->servidores)
@@ -94,6 +111,9 @@ string Sistema::set_server_invite_code(int id, const string nome, const string c
   return "Servidor ‘" + nome + "’ não existe";
 }
 
+/*
+A2.5 ok
+*/
 string Sistema::list_servers(int id) {
   if(!this->verifyUserStatus(id)) return "Usuário não conectado!";
   std::string result;
@@ -109,6 +129,9 @@ string Sistema::list_servers(int id) {
   return  result;
 }
 
+/*
+A2.6 ok
+*/
 string Sistema::remove_server(int id, const string nome) {
   if(!this->verifyUserStatus(id)) return "Usuário não conectado!";
  vector<Servidor>::iterator it;

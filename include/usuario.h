@@ -3,6 +3,9 @@
 
 #include <string>
 
+/*
+CP1 classe usuário ok!
+*/
 class Usuario{
 	public:
 		int id;
