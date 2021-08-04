@@ -56,7 +56,7 @@ string Sistema::create_server(int id, const string nome) {
     if(server.verifyName(nome)) return "Este servidor já existe";
   }
 
-  this->servidores.push_back(Servidor(id, nome));
+  this->servidores.push_back(Servidor(id, nome, "", ""));
   return "Servidor criado";
 }
 
@@ -64,11 +64,11 @@ string Sistema::set_server_desc(int id, const string nome, const string descrica
   
   if(!this->verifyUserStatus(id)) return "Usuário não conectado!";
 
-  for(Servidor server : this->servidores)
+  for(auto it = this->servidores.begin(); it != this->servidores.end(); it++)
   {
-    if(server.verifyName(nome)){
-      if(!server.verifyDonoId(id)) return "Você não possui permissão para fazer isso.";
-      server.setDescricao(descricao);
+    if(it->verifyName(nome)){
+      if(!it->verifyDonoId(id)) return "Você não possui permissão para fazer isso.";
+      it->setDescricao(descricao);
       return "Descrição do servidor ‘" + nome + "’ modificada!";
     }
   }
@@ -78,19 +78,17 @@ string Sistema::set_server_desc(int id, const string nome, const string descrica
 
 string Sistema::set_server_invite_code(int id, const string nome, const string codigo) {
   if(!this->verifyUserStatus(id)) return "Usuário não conectado!";
-  for(Servidor server : this->servidores)
+  
+  for(auto it = this->servidores.begin(); it != this->servidores.end(); it++)
   {
-    if(server.verifyName(nome)){
-      if(!server.verifyDonoId(id)) return "Você não possui permissão para fazer isso.";
-     if(codigo != ""){
-       server.setCodigoConvite(codigo);
-       return "Código de convite do servidor ‘" + nome + "’ modificado!";
-     }
-      server.setCodigoConvite("");
-      return "Código de convite do servidor ‘" + nome + "’ removido!";
+    if(it->verifyName(nome)){
+      if(!it->verifyDonoId(id)) return "Você não possui permissão para fazer isso.";
+      it->setCodigoConvite(codigo);
+      return codigo == "" 
+        ? "Código de convite do servidor "+ nome + " removido!"
+        : "Código de convite do servidor "+ nome + " modificado!"; 
     }
   }
-
   return "Servidor ‘" + nome + "’ não existe";
 }
 
@@ -111,7 +109,7 @@ string Sistema::list_servers(int id) {
 
 string Sistema::remove_server(int id, const string nome) {
   if(!this->verifyUserStatus(id)) return "Usuário não conectado!";
- vector<Servidor>::iterator it;
+  vector<Servidor>::iterator it;
 
   for(it = this->servidores.begin(); it != this->servidores.end(); it++)
   {
@@ -134,7 +132,25 @@ string Sistema::remove_server(int id, const string nome) {
 }
 
 string Sistema::enter_server(int id, const string nome, const string codigo) {
-  return "enter_server NÃO IMPLEMENTADO";
+  if(!this->verifyUserStatus(id)) return "Usuário não conectado!";
+
+  for(auto it = this->servidores.begin(); it != this->servidores.end(); it++)
+  {
+    if(it->getNome() == nome)
+    {
+      if(!it->verifyDonoId(id)) "Você não é o dono do servidor ‘"+ nome +"’";
+
+      if (it->verifyCodigo(codigo) || it->itsOpen())
+      {
+        this->usuariosLogados.insert({ id, { nome, "" } });
+        it->addUser(id);
+        return "Entrou no servidor com sucesso";
+      }
+      return "Servidor requer código de convite"; 
+    }
+  }
+
+  return "Servidor ‘" + nome + "’ não encontrado";
 }
 
 string Sistema::leave_server(int id, const string nome) {

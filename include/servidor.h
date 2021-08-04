@@ -4,23 +4,27 @@
 #include <string>
 #include <vector>
 #include "canaltexto.h"
+using namespace std;
 
 class Servidor{
 	private:
 		int usuarioDonoId;
 		std::string nome;
 		std::string descricao;
-		std::string codigoConvite;
+		public: std::string codigoConvite;
 		std::vector<CanalTexto> canaisTexto;
 		std::vector<int> participantesId;
 
 	public:
-		Servidor(int usuarioDonoId, std::string nome);
+		Servidor(int usuarioDonoId, std::string nome, std::string codigoConvite, std::string descricao);
 		bool verifyName(std::string name);
 		bool verifyDonoId(int id);
 		std::string getNome();
 		void setDescricao(std::string descricao);
-		void setCodigoConvite(std::string codigoConvite);
+		void setCodigoConvite(std::string cod);
+		bool itsOpen();
+		bool verifyCodigo(std::string codigo);
+		void addUser(int id);
 };	
 
 #endif
