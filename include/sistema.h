@@ -8,6 +8,7 @@
 #include "usuario.h"
 #include "servidor.h"
 #include "canaltexto.h"
+#include "stringHelper.h"
 
 
 // Sistema deve concentrar todas as operações do Concordo
@@ -178,6 +179,7 @@ class Sistema {
 		bool verifyUserStatus(int id);
 		bool verifyEmail(std::string email);
 		std::string getUserEmailById(int id);
+		std::string getUserNamebyId(int id);
 };
 
 #endif

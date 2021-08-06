@@ -11,7 +11,7 @@ class Servidor{
 		int usuarioDonoId;
 		std::string nome;
 		std::string descricao;
-		public: std::string codigoConvite;
+		std::string codigoConvite;
 		std::vector<CanalTexto> canaisTexto;
 		std::vector<int> participantesId;
 
@@ -25,6 +25,9 @@ class Servidor{
 		bool itsOpen();
 		bool verifyCodigo(std::string codigo);
 		void addUser(int id);
+		bool userExists(int id);
+		void deleteUser(int id);
+		std::string listAll();
 };	
 
 #endif

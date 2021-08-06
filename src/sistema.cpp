@@ -142,7 +142,8 @@ string Sistema::enter_server(int id, const string nome, const string codigo) {
 
       if (it->verifyCodigo(codigo) || it->itsOpen())
       {
-        this->usuariosLogados.insert({ id, { nome, "" } });
+        auto itUserLogado = this->usuariosLogados.find(id);
+        itUserLogado->second.first = nome;
         it->addUser(id);
         return "Entrou no servidor com sucesso";
       }
@@ -154,15 +155,56 @@ string Sistema::enter_server(int id, const string nome, const string codigo) {
 }
 
 string Sistema::leave_server(int id, const string nome) {
-  return "leave_server NÃO IMPLEMENTADO";
+  if(!this->verifyUserStatus(id)) return "Usuário não conectado!";
+
+  for(auto it = this->servidores.begin(); it != this->servidores.end(); it++)
+  {
+    if(it->getNome() == nome)
+    {
+      if(it->userExists(id)){
+        it->deleteUser(id);
+        (this->usuariosLogados.find(id))->second.first = "";
+        return "Saindo do servidor ‘" + nome + "’";
+      }
+
+      return "Você não está no servidor ‘" + nome + "’";
+    }
+  }
+
+  return "Servidor ‘" + nome + "’ não encontrado";
 }
 
 string Sistema::list_participants(int id) {
-  return "list_participants NÃO IMPLEMENTADO";
+  if(!this->verifyUserStatus(id)) return "Usuário não conectado!";
+
+  std::string serverName = this->usuariosLogados.find(id)->second.first;
+  if(serverName == "") return "Usuário não está conectado a nenhum servidor";
+
+  std::string participantes;
+  for(auto itServer = this->servidores.begin(); itServer != this->servidores.end(); itServer++)
+  {
+    if(itServer->getNome() == serverName){
+      if(!itServer->userExists(id)) return "O usuário não está em nenhum servidor";
+      std::vector<int> ids = StringHelper::splitLine(itServer->listAll(), " ");
+      std::string list;
+      int counter = 0;
+      for(auto uId = ids.begin(); uId != ids.end(); uId++){
+        if(uId != ids.end() - 1) list += this->getUserNamebyId(*uId) + "\n";
+        else{
+          list += this->getUserNamebyId(*uId);
+        }
+        counter++;
+      }
+
+      return list;
+    }
+  }
+
+  return "O usuário não está em nenhum servidor";
 }
 
 string Sistema::list_channels(int id) {
-  return "list_channels NÃO IMPLEMENTADO";
+  return "";
 }
 
 string Sistema::create_channel(int id, const string nome) {
@@ -217,3 +259,14 @@ std::string Sistema::getUserEmailById(int id)
   return email;
 }
 
+std::string Sistema::getUserNamebyId(int id)
+{
+  std::string name;
+
+  for(Usuario user : this->usuarios)
+  {
+    if(user.id == id) name = user.nome;
+  }
+
+  return name;
+}

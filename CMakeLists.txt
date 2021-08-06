@@ -13,6 +13,7 @@ add_executable( concordo
 								src/executor.cpp
                 src/mensagem.cpp
                 src/usuario.cpp
-                src/servidor.cpp)
+                src/servidor.cpp
+                src/stringHelper.cpp)
 
 # The end

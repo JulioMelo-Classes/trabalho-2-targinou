@@ -49,3 +49,37 @@ void Servidor::addUser(int id)
 {
     this->participantesId.push_back(id);
 }
+
+bool Servidor::userExists(int id)
+{
+    for(auto it = this->participantesId.begin(); it != this->participantesId.end(); it++)
+    {
+        if(*it == id) return true;
+    }
+
+    return false;
+}
+
+void Servidor::deleteUser(int id)
+{
+    vector<int>::iterator eraseIt;
+    for(auto it = this->participantesId.begin(); it != this->participantesId.end(); it++)
+    {
+        if(*it == id) {
+            eraseIt = it;
+        }
+    }
+
+    this->participantesId.erase(eraseIt);
+}
+
+std::string Servidor::listAll()
+{   
+    std::string list;
+    for(auto it = this->participantesId.begin(); it != this->participantesId.end(); it++)
+    {
+        list += to_string(*it) + " ";
+    }
+
+    return list;
+}
