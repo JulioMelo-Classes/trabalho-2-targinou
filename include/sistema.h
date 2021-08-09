@@ -176,9 +176,29 @@ class Sistema {
 				@return uma string vazia em caso de sucesso ou uma mensagem de erro em caso de falha.
 		*/
 		std::string list_messages(int id);
+
+		/*! Verifica se o usuário está logado.
+				@param id um id válido de algum usuário cadastrado e logado no sistema.
+				@return um bool que retorna veradeiro caso esteja logado ou false caso nao esteja.
+		*/
 		bool verifyUserStatus(int id);
+		
+		/*! Verififica se o usuário já está cadastrado.
+				@param id um id válido de algum usuário cadastrado e logado no sistema.
+				@return um bool que retorna veradeiro caso exista uma conta com esse email e falso caso contrário.
+		*/
 		bool verifyEmail(std::string email);
+		
+		/*! Retorna o email do usuário a partir do id.
+				@param id um id válido de algum usuário cadastrado e logado no sistema.
+				@return retorna um string com o email do usuário.
+		*/
 		std::string getUserEmailById(int id);
+		
+		/*! Retorna o nome do usuário a partir do id.
+				@param id um id válido de algum usuário cadastrado e logado no sistema.
+				@return Retorna uma string com o nome do usuário.
+		*/
 		std::string getUserNamebyId(int id);
 };
 
