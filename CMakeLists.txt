@@ -14,6 +14,7 @@ add_executable( concordo
                 src/mensagem.cpp
                 src/usuario.cpp
                 src/servidor.cpp
-                src/stringHelper.cpp)
+                src/stringHelper.cpp
+                src/canaltexto.cpp)
 
 # The end

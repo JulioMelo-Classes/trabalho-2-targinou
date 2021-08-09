@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 #include "canaltexto.h"
+#include "usuario.h"
+
 using namespace std;
 
 class Servidor{
@@ -28,6 +30,11 @@ class Servidor{
 		bool userExists(int id);
 		void deleteUser(int id);
 		std::string listAll();
+		std::string listChannels();
+		bool channelExists(std::string channelName);
+		void addChannel(std::string nome);
+		void sendMessage(std::string channel, int id, std::string conteudo);
+		std::string getMessages(std::string channelName, std::vector<Usuario> users);
 };	
 
 #endif

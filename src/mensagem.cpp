@@ -1,13 +1,9 @@
 #include "Mensagem.h"
 
-std::string Mensagem::getDataHora()
-{
-    return this->dataHora;
-}
-
-void Mensagem::setDataHora(std::string dataHora)
-{
-    this->dataHora = dataHora;
+Mensagem::Mensagem(int id, std::string conteudo) {
+    this->dataHora = this->setNow();
+    this->enviadaPor = id;
+    this->conteudo = conteudo;
 }
 
 int Mensagem::getEnviadaPor()
@@ -15,9 +11,9 @@ int Mensagem::getEnviadaPor()
     return this->enviadaPor;
 }
 
-void Mensagem::setEnviadaPor(int enviadaPor)
+std::string Mensagem::getDataHora()
 {
-    this->enviadaPor = enviadaPor;
+    return this->dataHora;
 }
 
 std::string Mensagem::getConteudo()
@@ -25,7 +21,12 @@ std::string Mensagem::getConteudo()
     return this->conteudo;
 }
 
-void Mensagem::setConteudo(std::string conteudo)
-{
-    this->conteudo = conteudo;
+std::string Mensagem::setNow() {
+    time_t now = time(0);
+    struct tm tstruct;
+    char buf[80];
+    tstruct = *localtime(&now);
+    strftime(buf, sizeof(buf), "<%d/%m/%Y - %X>", &tstruct);
+
+    return buf;
 }

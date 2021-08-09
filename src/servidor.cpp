@@ -83,3 +83,56 @@ std::string Servidor::listAll()
 
     return list;
 }
+
+std::string Servidor::listChannels()
+{
+    std::string list = "#canais de texto\n";
+    for(auto it = this->canaisTexto.begin(); it != this->canaisTexto.end(); it++)
+    {
+        if(it != this->canaisTexto.end() - 1){
+            list += it->getNome() + "\n";
+        }else{
+            list += it->getNome();
+        }
+    }
+
+    return list;
+}
+
+bool Servidor::channelExists(std::string channelName)
+{
+    for(auto it = this->canaisTexto.begin(); it != this->canaisTexto.end(); it++)
+    {
+        if(it->getNome() == channelName) return true;
+    }
+
+    return false;
+}
+
+void Servidor::addChannel(std::string nome)
+{
+    this->canaisTexto.push_back(CanalTexto(nome));
+}
+
+void Servidor::sendMessage(std::string channel, int id, std::string conteudo)
+{
+    for(auto it = this->canaisTexto.begin(); it != this->canaisTexto.end(); it++)
+    {
+        if(it->getNome() == channel){
+            it->sendMessage(id, conteudo);
+        }
+    }
+}
+
+std::string Servidor::getMessages(std::string channelName, std::vector<Usuario> users)
+{
+    std::string list;
+    for(auto it = this->canaisTexto.begin(); it != this->canaisTexto.end(); it++)
+    {
+        if(it->getNome() == channelName){
+            list = it->listMessages(users);
+        }
+    }
+
+    return list;
+}

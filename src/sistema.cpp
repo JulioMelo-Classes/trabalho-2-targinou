@@ -204,27 +204,82 @@ string Sistema::list_participants(int id) {
 }
 
 string Sistema::list_channels(int id) {
-  return "";
+  if(!this->verifyUserStatus(id)) return "Usuário não conectado!";
+  for(auto itServer = this->servidores.begin(); itServer != this->servidores.end(); itServer++)
+  {
+    if(itServer->userExists(id)) {
+      return itServer->listChannels();
+    }
+  }
+  return "O usuário não está em nenhum servidor";
 }
 
 string Sistema::create_channel(int id, const string nome) {
-  return "create_channel NÃO IMPLEMENTADO";
+  if(!this->verifyUserStatus(id)) return "Usuário não conectado!";
+  for(auto itServer = this->servidores.begin(); itServer != this->servidores.end(); itServer++)
+  {
+    if(itServer->userExists(id)) {
+      if(itServer->channelExists(nome)) return "Canal de texto ‘" + nome + "’ já existe!";
+      itServer->addChannel(nome);
+      this->usuariosLogados.find(id)->second.second = nome;
+      return "Canal de texto ‘"+ nome + " ’criado";
+    }
+  }
+
+  return "O usuário não está em nenhum servidor";
 }
 
 string Sistema::enter_channel(int id, const string nome) {
-  return "enter_channel NÃO IMPLEMENTADO";
+  if(!this->verifyUserStatus(id)) return "Usuário não conectado!";
+  for(auto itServer = this->servidores.begin(); itServer != this->servidores.end(); itServer++)
+  {
+    if(itServer->userExists(id)) {
+      if(!itServer->channelExists(nome)) return "Canal ‘" + nome + "’ não existe";
+      this->usuariosLogados.find(id)->second.second = nome;
+      return "Entrou no canal ‘" + nome + "’";
+    }
+  }
+  return "O usuário não está em nenhum servidor";
 }
 
 string Sistema::leave_channel(int id) {
-  return "leave_channel NÃO IMPLEMENTADO";
+  if(!this->verifyUserStatus(id)) return "Usuário não conectado!";
+  for(auto itServer = this->servidores.begin(); itServer != this->servidores.end(); itServer++)
+  {
+    if(itServer->userExists(id)) {
+      if(this->usuariosLogados.find(id)->second.second == "") return "Usuário não esta vizualidando nenhum canal";
+      this->usuariosLogados.find(id)->second.second = "";
+      return "Saindo do canal";
+    }
+  }
+  return "O usuário não está em nenhum servidor";
 }
 
 string Sistema::send_message(int id, const string mensagem) {
-  return "send_message NÃO IMPLEMENTADO";
+  if(!this->verifyUserStatus(id)) return "Usuário não conectado!";
+  for(auto itServer = this->servidores.begin(); itServer != this->servidores.end(); itServer++)
+  {
+    if(itServer->userExists(id)) {
+      if(this->usuariosLogados.find(id)->second.second == "") return "Usuário não esta vizualidando nenhum canal";
+      itServer->sendMessage(this->usuariosLogados.find(id)->second.second, id, mensagem);
+      return "";
+    }
+  }
+  return "O usuário não está em nenhum servidor";
 }
 
 string Sistema::list_messages(int id) {
-  return "list_messages NÃO IMPLEMENTADO";
+  if(!this->verifyUserStatus(id)) return "Usuário não conectado!";
+  for(auto itServer = this->servidores.begin(); itServer != this->servidores.end(); itServer++)
+  {
+    if(itServer->userExists(id)) {
+      if(this->usuariosLogados.find(id)->second.second == "") return "Usuário não esta vizualidando nenhum canal";
+      std::string list = itServer->getMessages(this->usuariosLogados.find(id)->second.second, this->usuarios);
+      if(list.length() == 0) return "Sem mensagens para exibir";
+      return list;
+    }
+  }
+  return "O usuário não está em nenhum servidor";
 }
 
 
