@@ -1,5 +1,7 @@
 # Base para a atividade 02 de LP1
 
+<!--como você não fez novos arquivos de teste ou documentou os testes aqui vou considerar 0 neste quesito!-->
+
 Use esse esqueleto de classes para iniciar a terceira atividade.
 
 Existe um executor que faz a interpretação dos comandos e executa o método correto do sistema.

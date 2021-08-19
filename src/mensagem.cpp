@@ -1,4 +1,4 @@
-#include "Mensagem.h"
+#include "mensagem.h" //estava com M
 
 Mensagem::Mensagem(int id, std::string conteudo) {
     this->dataHora = this->setNow();

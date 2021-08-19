@@ -3,6 +3,11 @@
 
 #include <string>
 
+/*
+Cp2 ok
+
+Documentação 0.8
+*/
 class Mensagem
 {
     private: 

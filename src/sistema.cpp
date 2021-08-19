@@ -69,11 +69,11 @@ string Sistema::set_server_desc(int id, const string nome, const string descrica
     if(it->verifyName(nome)){
       if(!it->verifyDonoId(id)) return "Você não possui permissão para fazer isso.";
       it->setDescricao(descricao);
-      return "Descrição do servidor ‘" + nome + "’ modificada!";
+      return "Descrição do servidor '" + nome + "' modificada!";
     }
   }
 
-  return "Servidor ‘" + nome + "’ não existe";
+  return "Servidor '" + nome + "' não existe";
 }
 
 string Sistema::set_server_invite_code(int id, const string nome, const string codigo) {
@@ -89,7 +89,7 @@ string Sistema::set_server_invite_code(int id, const string nome, const string c
         : "Código de convite do servidor "+ nome + " modificado!"; 
     }
   }
-  return "Servidor ‘" + nome + "’ não existe";
+  return "Servidor '" + nome + "' não existe";
 }
 
 string Sistema::list_servers(int id) {
@@ -115,7 +115,7 @@ string Sistema::remove_server(int id, const string nome) {
   {
     if(it->getNome() == nome)
     {
-      if(!it->verifyDonoId(id)) return "Você não é o dono do servidor ‘"+ nome +"’";
+      if(!it->verifyDonoId(id)) return "Você não é o dono do servidor '"+ nome +"'";
       for(map<int, std::pair<std::string, std::string>>::iterator it = this->usuariosLogados.begin(); it != this->usuariosLogados.end(); it++)
       {
         if(nome == it->second.first){
@@ -124,13 +124,18 @@ string Sistema::remove_server(int id, const string nome) {
         }
       }
       this->servidores.erase(it);
-      return "Servidor ‘"+ nome +"’ removido";
+      return "Servidor '"+ nome +"' removido";
     }
   }
 
-  return "Servidor ‘" + nome + "’ não encontrado";
+  return "Servidor '" + nome + "' não encontrado";
 }
 
+/*
+A2.7 0,6
+- se o comando for chamado duas vezes pelo mesmo usuário, ficam duas cópias do mesmo usuário no servidor. -20%
+- quando o dono do servidor tenta entrar nele, não deve ser necessária senha! -20%
+*/
 string Sistema::enter_server(int id, const string nome, const string codigo) {
   if(!this->verifyUserStatus(id)) return "Usuário não conectado!";
 
@@ -138,7 +143,7 @@ string Sistema::enter_server(int id, const string nome, const string codigo) {
   {
     if(it->getNome() == nome)
     {
-      if(!it->verifyDonoId(id)) "Você não é o dono do servidor ‘"+ nome +"’";
+      if(!it->verifyDonoId(id)) "Você não é o dono do servidor '"+ nome +"'";
 
       if (it->verifyCodigo(codigo) || it->itsOpen())
       {
@@ -151,9 +156,12 @@ string Sistema::enter_server(int id, const string nome, const string codigo) {
     }
   }
 
-  return "Servidor ‘" + nome + "’ não encontrado";
+  return "Servidor '" + nome + "' não encontrado";
 }
 
+/*
+A2.8 ok
+*/
 string Sistema::leave_server(int id, const string nome) {
   if(!this->verifyUserStatus(id)) return "Usuário não conectado!";
 
@@ -164,16 +172,19 @@ string Sistema::leave_server(int id, const string nome) {
       if(it->userExists(id)){
         it->deleteUser(id);
         (this->usuariosLogados.find(id))->second.first = "";
-        return "Saindo do servidor ‘" + nome + "’";
+        return "Saindo do servidor '" + nome + "'";
       }
 
-      return "Você não está no servidor ‘" + nome + "’";
+      return "Você não está no servidor '" + nome + "'";
     }
   }
 
-  return "Servidor ‘" + nome + "’ não encontrado";
+  return "Servidor '" + nome + "' não encontrado";
 }
 
+/*
+A2.9 ok
+*/
 string Sistema::list_participants(int id) {
   if(!this->verifyUserStatus(id)) return "Usuário não conectado!";
 
@@ -203,6 +214,9 @@ string Sistema::list_participants(int id) {
   return "O usuário não está em nenhum servidor";
 }
 
+/*
+B1.1 ok
+*/
 string Sistema::list_channels(int id) {
   if(!this->verifyUserStatus(id)) return "Usuário não conectado!";
   for(auto itServer = this->servidores.begin(); itServer != this->servidores.end(); itServer++)
@@ -214,34 +228,43 @@ string Sistema::list_channels(int id) {
   return "O usuário não está em nenhum servidor";
 }
 
+/*
+B1.2 ok
+*/
 string Sistema::create_channel(int id, const string nome) {
   if(!this->verifyUserStatus(id)) return "Usuário não conectado!";
   for(auto itServer = this->servidores.begin(); itServer != this->servidores.end(); itServer++)
   {
     if(itServer->userExists(id)) {
-      if(itServer->channelExists(nome)) return "Canal de texto ‘" + nome + "’ já existe!";
+      if(itServer->channelExists(nome)) return "Canal de texto '" + nome + "' já existe!";
       itServer->addChannel(nome);
       this->usuariosLogados.find(id)->second.second = nome;
-      return "Canal de texto ‘"+ nome + " ’criado";
+      return "Canal de texto '"+ nome + " 'criado";
     }
   }
 
   return "O usuário não está em nenhum servidor";
 }
 
+/*
+B1.3 ok
+*/
 string Sistema::enter_channel(int id, const string nome) {
   if(!this->verifyUserStatus(id)) return "Usuário não conectado!";
   for(auto itServer = this->servidores.begin(); itServer != this->servidores.end(); itServer++)
   {
     if(itServer->userExists(id)) {
-      if(!itServer->channelExists(nome)) return "Canal ‘" + nome + "’ não existe";
+      if(!itServer->channelExists(nome)) return "Canal '" + nome + "' não existe";
       this->usuariosLogados.find(id)->second.second = nome;
-      return "Entrou no canal ‘" + nome + "’";
+      return "Entrou no canal '" + nome + "'";
     }
   }
   return "O usuário não está em nenhum servidor";
 }
 
+/*
+B1.4 ok
+*/
 string Sistema::leave_channel(int id) {
   if(!this->verifyUserStatus(id)) return "Usuário não conectado!";
   for(auto itServer = this->servidores.begin(); itServer != this->servidores.end(); itServer++)
@@ -255,6 +278,9 @@ string Sistema::leave_channel(int id) {
   return "O usuário não está em nenhum servidor";
 }
 
+/*
+B2.1 ok
+*/
 string Sistema::send_message(int id, const string mensagem) {
   if(!this->verifyUserStatus(id)) return "Usuário não conectado!";
   for(auto itServer = this->servidores.begin(); itServer != this->servidores.end(); itServer++)
@@ -268,6 +294,9 @@ string Sistema::send_message(int id, const string mensagem) {
   return "O usuário não está em nenhum servidor";
 }
 
+/*
+B2.2 ok
+*/
 string Sistema::list_messages(int id) {
   if(!this->verifyUserStatus(id)) return "Usuário não conectado!";
   for(auto itServer = this->servidores.begin(); itServer != this->servidores.end(); itServer++)

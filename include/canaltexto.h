@@ -6,6 +6,11 @@
 #include "mensagem.h"
 #include "usuario.h"
 
+/*
+Cp2 ok
+
+documentação: 0,8 faltaram os atributos
+*/
 class CanalTexto{
 	private: 
 		std::string nome;

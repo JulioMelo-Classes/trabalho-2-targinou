@@ -8,6 +8,11 @@
 
 using namespace std;
 
+/*
+Cp2 ok
+
+Documentação 0.8, faltaram os atributos
+*/
 class Servidor{
 	private:
 		int usuarioDonoId;
